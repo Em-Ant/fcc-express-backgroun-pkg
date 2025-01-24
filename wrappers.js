@@ -4,7 +4,8 @@
  * ***************************************************/
 
 const globals = require('./globals');
-const ip = require("ip");
+const Address4 = require('ip-address').Address4
+const Address6 = require('ip-address').Address6
 
 // Store a reference to the original console.log()
 const log = console.log;
@@ -46,7 +47,10 @@ function testLogMessage(args) {
   if (
     msg.match(/(GET|POST|PUT|DELETE|CONNECT|HEAD|OPTIONS|TRACE)\s\/.*\s\-/)
   ) {
-    if (ip.isV4Format(ipAddress.trim()) || ip.isV6Format(ipAddress.trim())) {
+    const v4Address = new Address4(ipAddress.trim())
+    const v6Address = new Address6(ipAddress.trim())
+
+    if (v4Address.isCorrect() || v6Address.isCorrect()) {
       globals.userPassedLoggerChallenge = true;
     }
   }
